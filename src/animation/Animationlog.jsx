@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './style.css';
 import { useNavigate } from 'react-router-dom';
 import { useAnimationEffect } from './useAnimationEffect ';
-import { auth, provider } from '../googleSignin/Config';
+import { auth, gitprovider, provider } from '../googleSignin/Config';
 import { signInWithPopup } from 'firebase/auth';
 
 function Animationlog() {
@@ -31,6 +31,19 @@ function Animationlog() {
     });
   };
 
+  const handlegit = async () => {
+    try {
+      const result = await signInWithPopup(auth, gitprovider);
+      setValue(result.user.email);
+      localStorage.setItem("email", result.user.email);
+      navigate('/home');
+    } catch (error) {
+      console.error("GitHub Sign-In Error:", error);
+      alert("Failed to sign in with GitHub");
+    }
+  };
+  
+
   useEffect(() => {
     setValue(localStorage.getItem('email'));
   }, []);
@@ -45,7 +58,7 @@ function Animationlog() {
               <i className="fa-brands fa-google-plus-g"></i>
             </a>
             <a href="#" className="icon"><i className="fa-brands fa-facebook-f"></i></a>
-            <a href="#" className="icon"><i className="fa-brands fa-github"></i></a>
+            <a href="#" onClick={handlegit} className="icon"><i className="fa-brands fa-github"></i></a>
             <a href="#" className="icon"><i className="fa-brands fa-linkedin-in"></i></a>
           </div>
           <span>or use your email for registration</span>
@@ -65,7 +78,7 @@ function Animationlog() {
               <i className="fa-brands fa-google-plus-g"></i>
             </a>
             <a href="#" className="icon"><i className="fa-brands fa-facebook-f"></i></a>
-            <a href="#" className="icon"><i className="fa-brands fa-github"></i></a>
+            <a href="#" onClick={handlegit} className="icon"><i className="fa-brands fa-github"></i></a>
             <a href="#" className="icon"><i className="fa-brands fa-linkedin-in"></i></a>
           </div>
           <span>or use your email for password</span>
